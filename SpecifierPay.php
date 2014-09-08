@@ -13,9 +13,9 @@ class SpecifierPay extends CActiveRecordBehavior
     
     /**
      * Create new customer info
-     * @var $company
-     * @var $email
-     * @var $cardArray = array ("number"=>, "exp_month"=>, "exp_year"=>, "cvc"=>, "name"=>, 
+     * @var string $company
+     * @var string $email
+     * @var array $cardArray = array ("number"=>, "exp_month"=>, "exp_year"=>, "cvc"=>, "name"=>, 
      * 							"address_line1"=>, "address_line2"=>, "address_city"=>, "address_zip"=>, "address_country"=>)
      * @return customer object / false
      */
@@ -38,8 +38,46 @@ class SpecifierPay extends CActiveRecordBehavior
     }
 
     /**
+     * Update Client info 
+     * @var string $description
+     * @var string $email 
+     * @var array $cardArray = array ("number"=>, "exp_month"=>, "exp_year"=>, "cvc"=>, "name"=>, 
+     * 							"address_line1"=>, "address_line2"=>, "address_city"=>, "address_zip"=>, "address_country"=>)
+     * 
+     * @return customer object / false
+     * 
+     */
+
+    public function updateClient($clientObj, $description = null, $email = null, $cardArr = array()){
+
+    	try {
+
+    		if (isset($description)){
+    			$clientObj->description = $description;
+    		}
+
+    		if (isset($email)){
+    			$clientObj->email = $email;
+    		}
+    		
+    		if (isset($cardArr) && is_array($cardArr)){
+    			$clientObj->card = $cardArr;
+    		}
+
+    		return 
+
+    		$clientObj->save();
+
+    	}
+    	catch (Exception $e){
+
+    		return false;
+    	}
+    }
+
+    /**
      * Get customer info
-     * @var $id
+     * @var string $id
      * @return customer object / false
      * 
      */
@@ -56,12 +94,60 @@ class SpecifierPay extends CActiveRecordBehavior
     	}
     }
 
-    
+    /**
+     * Insert a charge
+     * @var int $amount (aud dollar)
+     * @var string $clientId
+     * @var string $description
+     * 
+     * @return customer charge object / false
+     */
+    public function insertCharge($amount, $clientId, $description){
+
+    	try {
+
+    		return 
+
+    		Stripe_Charge::create(array(
+			  "amount" => $amount * 100,
+			  "currency" => "aud",
+			  "customer" => $clientId,
+			  "description" => $description
+			));
+
+    	}
+    	catch (Exception $e){
+    		return false;
+    	}
+    }
+
+    /**
+     * Get a charge info
+     * @var string $chargeId
+     * 
+     * @return charge object / false
+     * 
+     */
+
+    public function getCharge($chargeId){
+    	try {
+
+    		return 
+
+    		Stripe_Charge::retrieve($chargeId);
+
+    	}
+    	catch (Exception $e){
+    		return false;
+    	}
+    }
+
+
 
     /**
      * Subscribe service for customers on recurring basis
-     * @var $clientObj
-     * @var $planId  // subscription plan id
+     * @var class $clientObj
+     * @var string $planId  // subscription plan id
      * @return subscription obj / false
      */
     public function insertSubscription($clientObj, $planId){
@@ -78,5 +164,53 @@ class SpecifierPay extends CActiveRecordBehavior
     		return false;
     	}
 
+    }
+
+
+    public function updateSubscription(){
+    	
+    }
+
+    /**
+     * Get a subscription info
+     * @var object $clientObj
+     * @var string $subId
+     * 
+     * @return subscription object / false
+     * 
+     */
+
+    public function getSubscription($clientObj, $subId){
+    	try {
+
+    		return 
+
+    		$clientObj->subscriptions->retrieve($subId);
+
+    	}
+    	catch (Exception $e){
+    		return false;
+    	}
+    }
+
+    /**
+     * Cancel the subscription until the end of current period
+     * @var object $clientObj
+     * @var string $subId
+     * 
+     * @return subscription object / false
+     */
+
+    public function cancelSubscription($clientObj, $subId){
+    	try {
+
+    		return 
+
+    		$clientObj->subscriptions->retrieve($subId)->cancel(array('at_period_end'=>true));
+
+    	}
+    	catch (Exception $e){
+    		return false;
+    	}
     }
 }
