@@ -142,6 +142,29 @@ class SpecifierPay extends CActiveRecordBehavior
     	}
     }
 
+    /**
+     * List charge based on client and limit
+     * @var object $clientObj
+     * @var int $limit
+     * 
+     * @return object array of charge
+     * 
+     * 
+     */
+
+   	public function listCharge($clientObj, $limit = 3){
+   		try {
+
+   			return 
+
+   			Stripe_Charge::all(array("customer" => $clientObj, "limit" => $limit));
+   		}
+   		catch (Exception $e){
+   			return false;
+   		}
+
+   	}
+
 
 
     /**
@@ -164,11 +187,6 @@ class SpecifierPay extends CActiveRecordBehavior
     		return false;
     	}
 
-    }
-
-
-    public function updateSubscription(){
-    	
     }
 
     /**
