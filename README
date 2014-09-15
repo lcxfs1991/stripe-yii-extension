@@ -7,7 +7,7 @@ Customer -- Out Client (Company)
 
 Charge -- Each charge of fees
 
-Plan -- We have three plan (product) (basic, digital library and virtual exhibition)
+Plan -- We have three plan (product)
 
 Subscription -- Subscription of plan
 
