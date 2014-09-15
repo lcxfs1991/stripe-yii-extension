@@ -1,0 +1,13 @@
+
+Documentation: https://stripe.com/docs
+
+PHP API Doc: https://stripe.com/docs/api/php
+
+Customer -- Out Client (Company)
+
+Charge -- Each charge of fees
+
+Plan -- We have three plan (product) (basic, digital library and virtual exhibition)
+
+Subscription -- Subscription of plan
+

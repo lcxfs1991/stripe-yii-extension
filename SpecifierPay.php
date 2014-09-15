@@ -231,4 +231,6 @@ class SpecifierPay extends CActiveRecordBehavior
     		return false;
     	}
     }
+
+    
 }
