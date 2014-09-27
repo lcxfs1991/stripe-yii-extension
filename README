@@ -11,3 +11,17 @@ Plan -- We have three plan (product)
 
 Subscription -- Subscription of plan
 
+
+Usage:
+
+in config/main, add a key:
+
+'params'=>array(
+		'stripeKey' => 'xxxxxx',
+),
+
+in the controller or model, when you use it, please use:
+
+$pay = new SpecifierPay(Yii::app()->params['stripeKey']);
+
+
